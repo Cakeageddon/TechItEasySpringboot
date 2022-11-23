@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ public class TelevisionController {
     }
 
     @GetMapping("/televisions/{id}")
-    public ResponseEntity<Object> getTelevision(@PathVariable int id) {
+    public ResponseEntity<Object> getTelevision(@PathVariable Long id) {
 
         Optional <Television> optionalTelevision = televisionRepository.findById(id);
 
@@ -38,42 +39,45 @@ public class TelevisionController {
 
     @PostMapping("/televisions")
     public ResponseEntity<Object> createTelevision(@RequestBody Television television) {
-        televisionRepository.save(television);
-        URI location = URI.create(String.format("/%s", television.getName()));
+        Television televisionSavedLocal = televisionRepository.save(television);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(televisionSavedLocal.getId()).toUri();
         return ResponseEntity.created(location).body("Created television");
     }
 
     @PutMapping("/televisions/{id}")
-    public ResponseEntity<Object> updateTelevision(@PathVariable int id, @RequestBody Television t) {
+    public ResponseEntity<Object> updateTelevision(@PathVariable Long id, @RequestBody Television t) {
         Optional <Television> optionalTelevision = televisionRepository.findById(id);
 
         if (optionalTelevision.isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
             Television updateTelevision = optionalTelevision.get();
-            updateTelevision.setId(t.getId());
-            updateTelevision.setType(t.getType());
-            updateTelevision.setBrand(t.getBrand());
-            updateTelevision.setName(t.getName());
-            updateTelevision.setPrice(t.getPrice());
-            updateTelevision.setAvailableSize(t.getAvailableSize());
-            updateTelevision.setRefreshRate(t.getRefreshRate());
-            updateTelevision.setScreenType(t.getScreenType());
-            updateTelevision.setScreenQuality(t.getScreenQuality());
-            updateTelevision.setSmartTv(t.getSmartTv());
-            updateTelevision.setWifi(t.getWifi());
-            updateTelevision.setVoiceControl(t.getVoiceControl());
-            updateTelevision.setHdr(t.getHdr());
-            updateTelevision.setBluetooth(t.getBluetooth());
-            updateTelevision.setAmbiLight(t.getAmbiLight());
-            updateTelevision.setOriginalStock(t.getOriginalStock());
-            updateTelevision.setSold(t.getSold());
+            if (t.getId() != null) {updateTelevision.setId(t.getId());}
+            if (t.getType() != null) {updateTelevision.setType(t.getType());}
+            if (t.getBrand() != null) {updateTelevision.setBrand(t.getBrand());}
+            if (t.getName() != null) {updateTelevision.setName(t.getName());}
+            if (t.getPrice() != null) {updateTelevision.setPrice(t.getPrice());}
+            if (t.getAvailableSize() != null) {updateTelevision.setAvailableSize(t.getAvailableSize());}
+            if (t.getRefreshRate() != null) {updateTelevision.setRefreshRate(t.getRefreshRate());}
+            if (t.getScreenType() != null) {updateTelevision.setScreenType(t.getScreenType());}
+            if (t.getScreenQuality() != null) {updateTelevision.setScreenQuality(t.getScreenQuality());}
+            if (t.getSmartTv() != null) {updateTelevision.setSmartTv(t.getSmartTv());}
+            if (t.getWifi() != null) {updateTelevision.setWifi(t.getWifi());}
+            if (t.getVoiceControl() != null) {updateTelevision.setVoiceControl(t.getVoiceControl());}
+            if (t.getHdr() != null) {updateTelevision.setHdr(t.getHdr());}
+            if (t.getBluetooth() != null) {updateTelevision.setBluetooth(t.getBluetooth());}
+            if (t.getAmbiLight() != null) {updateTelevision.setAmbiLight(t.getAmbiLight());}
+            if (t.getOriginalStock() != null) {updateTelevision.setOriginalStock(t.getOriginalStock());}
+            if (t.getSold() != null) {updateTelevision.setSold(t.getSold());}
+            televisionRepository.save(updateTelevision);
             return ResponseEntity.ok(updateTelevision);
         }
     }
 
     @DeleteMapping("/televisions/{id}")
-    public ResponseEntity<Object> deleteTelevision(@PathVariable int id) {
+    public ResponseEntity<Object> deleteTelevision(@PathVariable Long id) {
         Optional <Television> optionalTelevision = televisionRepository.findById(id);
 
         if (optionalTelevision.isEmpty()) {
