@@ -1,22 +1,15 @@
-package com.voorbeeld.TechItEasy.models;
+package com.voorbeeld.TechItEasy.dtos;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
-@Entity
-@Table(name = "televisions")
-public class Television {
-
-    @Id
-    @GeneratedValue
+public class TelevisionInputDto {
     private Long id;
     private String type;
     private String brand;
+    @Size(min = 3, max = 30)
     private String name;
+    @Positive
     private Double price;
     private Double availableSize;
     private Double refreshRate;
@@ -30,42 +23,6 @@ public class Television {
     private Boolean ambiLight;
     private Integer originalStock;
     private Integer sold;
-
-
-    public Television() {
-
-    }
-
-    public Television(Long id, String type, String brand, String name, Double price, Double availableSize,
-                      Double refreshRate, String screenType, String screenQuality, Boolean smartTv, Boolean wifi,
-                      Boolean voiceControl, Boolean hdr, Boolean bluetooth, Boolean ambiLight, Integer originalStock,
-                      Integer sold) {
-        this.id = id;
-        this.type = type;
-        this.brand = brand;
-        this.name = name;
-        this.price = price;
-        this.availableSize = availableSize;
-        this.refreshRate = refreshRate;
-        this.screenType = screenType;
-        this.screenQuality = screenQuality;
-        this.smartTv = smartTv;
-        this.wifi = wifi;
-        this.voiceControl = voiceControl;
-        this.hdr = hdr;
-        this.bluetooth = bluetooth;
-        this.ambiLight = ambiLight;
-        this.originalStock = originalStock;
-        this.sold = sold;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getType() {
         return type;
@@ -193,5 +150,12 @@ public class Television {
 
     public void setSold(Integer sold) {
         this.sold = sold;
+    }
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

@@ -1,45 +1,39 @@
 package com.voorbeeld.TechItEasy.controllers;
 
-import com.voorbeeld.TechItEasy.exceptions.RecordNotFoundException;
-import com.voorbeeld.TechItEasy.models.Television;
-import com.voorbeeld.TechItEasy.repositories.TelevisionRepository;
+import com.voorbeeld.TechItEasy.dtos.TelevisionDto;
+import com.voorbeeld.TechItEasy.dtos.TelevisionInputDto;
+import com.voorbeeld.TechItEasy.service.TelevisionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Optional;
+import java.util.List;
 
 @RestController
 public class TelevisionController {
-
     @Autowired
-    TelevisionRepository televisionRepository;
+    private TelevisionService televisionService;
+
+    public TelevisionController(TelevisionService televisionService) {
+        this.televisionService = televisionService;
+    }
 
     @GetMapping("/televisions")
-    public ResponseEntity<Object> getAllTelevisions(){
-       return ResponseEntity.ok(televisionRepository.findAll());
+    public ResponseEntity<List<TelevisionDto>> getAllTelevisions() {
+        return ResponseEntity.ok(televisionService.getAllTelevisions());
     }
 
     @GetMapping("/televisions/{id}")
-    public ResponseEntity<Object> getTelevision(@PathVariable Long id) {
-
-        Optional <Television> optionalTelevision = televisionRepository.findById(id);
-
-        if (optionalTelevision.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        } else {
-            televisionRepository.findById(id);
-            return ResponseEntity.ok(televisionRepository.findById(id));
-        }
+    public ResponseEntity<TelevisionDto> getTelevision(@PathVariable Long id) {
+        TelevisionDto televisionDto = televisionService.getOneTelevision(id);
+        return ResponseEntity.ok(televisionDto);
     }
 
     @PostMapping("/televisions")
-    public ResponseEntity<Object> createTelevision(@RequestBody Television television) {
-        Television televisionSavedLocal = televisionRepository.save(television);
+    public ResponseEntity<Object> createTelevision(@RequestBody TelevisionInputDto television) {
+        TelevisionDto televisionSavedLocal = televisionService.createTelevision(television);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(televisionSavedLocal.getId()).toUri();
@@ -47,44 +41,13 @@ public class TelevisionController {
     }
 
     @PutMapping("/televisions/{id}")
-    public ResponseEntity<Object> updateTelevision(@PathVariable Long id, @RequestBody Television t) {
-        Optional <Television> optionalTelevision = televisionRepository.findById(id);
-
-        if (optionalTelevision.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        } else {
-            Television updateTelevision = optionalTelevision.get();
-            if (t.getId() != null) {updateTelevision.setId(t.getId());}
-            if (t.getType() != null) {updateTelevision.setType(t.getType());}
-            if (t.getBrand() != null) {updateTelevision.setBrand(t.getBrand());}
-            if (t.getName() != null) {updateTelevision.setName(t.getName());}
-            if (t.getPrice() != null) {updateTelevision.setPrice(t.getPrice());}
-            if (t.getAvailableSize() != null) {updateTelevision.setAvailableSize(t.getAvailableSize());}
-            if (t.getRefreshRate() != null) {updateTelevision.setRefreshRate(t.getRefreshRate());}
-            if (t.getScreenType() != null) {updateTelevision.setScreenType(t.getScreenType());}
-            if (t.getScreenQuality() != null) {updateTelevision.setScreenQuality(t.getScreenQuality());}
-            if (t.getSmartTv() != null) {updateTelevision.setSmartTv(t.getSmartTv());}
-            if (t.getWifi() != null) {updateTelevision.setWifi(t.getWifi());}
-            if (t.getVoiceControl() != null) {updateTelevision.setVoiceControl(t.getVoiceControl());}
-            if (t.getHdr() != null) {updateTelevision.setHdr(t.getHdr());}
-            if (t.getBluetooth() != null) {updateTelevision.setBluetooth(t.getBluetooth());}
-            if (t.getAmbiLight() != null) {updateTelevision.setAmbiLight(t.getAmbiLight());}
-            if (t.getOriginalStock() != null) {updateTelevision.setOriginalStock(t.getOriginalStock());}
-            if (t.getSold() != null) {updateTelevision.setSold(t.getSold());}
-            televisionRepository.save(updateTelevision);
-            return ResponseEntity.ok(updateTelevision);
-        }
+    public ResponseEntity<Object> updateTelevision(@PathVariable Long id, @RequestBody TelevisionInputDto t) {
+        return ResponseEntity.ok(televisionService.updateTelevision(id, t));
     }
 
     @DeleteMapping("/televisions/{id}")
     public ResponseEntity<Object> deleteTelevision(@PathVariable Long id) {
-        Optional <Television> optionalTelevision = televisionRepository.findById(id);
-
-        if (optionalTelevision.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        } else {
-            televisionRepository.deleteById(id);
-            return new ResponseEntity<>("Object deleted", HttpStatus.OK);
-        }
+        televisionService.deleteTelevision(id);
+        return ResponseEntity.ok("Object with id: " + id + " is deleted");
     }
 }
