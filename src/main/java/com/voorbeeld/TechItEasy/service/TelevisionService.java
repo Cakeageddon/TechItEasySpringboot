@@ -2,34 +2,40 @@ package com.voorbeeld.TechItEasy.service;
 
 import com.voorbeeld.TechItEasy.dtos.TelevisionDto;
 import com.voorbeeld.TechItEasy.dtos.TelevisionInputDto;
+import com.voorbeeld.TechItEasy.dtos.WallBracketDto;
 import com.voorbeeld.TechItEasy.exceptions.RecordNotFoundException;
 import com.voorbeeld.TechItEasy.models.CiModule;
 import com.voorbeeld.TechItEasy.models.RemoteControl;
 import com.voorbeeld.TechItEasy.models.Television;
+import com.voorbeeld.TechItEasy.models.WallBracket;
 import com.voorbeeld.TechItEasy.repositories.CiModuleRepository;
 import com.voorbeeld.TechItEasy.repositories.RemoteControlRepository;
 import com.voorbeeld.TechItEasy.repositories.TelevisionRepository;
+import com.voorbeeld.TechItEasy.repositories.WallBracketRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static com.voorbeeld.TechItEasy.service.CiModuleService.transferToCiModuleDto;
 import static com.voorbeeld.TechItEasy.service.RemoteControlService.transferToRemoteControlDto;
+import static com.voorbeeld.TechItEasy.service.WallBracketService.transferToWallBracketDto;
 
 @Service
 public class TelevisionService {
 
     TelevisionRepository televisionRepository;
     RemoteControlRepository remoteControlRepository;
-
     CiModuleRepository ciModuleRepository;
+    WallBracketRepository wallBracketRepository;
 
-    public TelevisionService(TelevisionRepository televisionRepository, RemoteControlRepository remoteControlRepository, CiModuleRepository ciModuleRepository) {
+    public TelevisionService(TelevisionRepository televisionRepository, RemoteControlRepository remoteControlRepository, CiModuleRepository ciModuleRepository, WallBracketRepository wallBracketRepository) {
         this.televisionRepository = televisionRepository;
         this.remoteControlRepository = remoteControlRepository;
         this.ciModuleRepository = ciModuleRepository;
+        this.wallBracketRepository = wallBracketRepository;
     }
 
     public void assignRemoteControllerToTelevision(Long televisionId, Long remoteControlId) {
@@ -58,6 +64,19 @@ public class TelevisionService {
             televisionRepository.save(television);
         }
     }
+
+//    public void assignWallBracketToTelevision(Long televisionId, Long wallBracketId) {
+//        Optional<Television> optionalTelevision = televisionRepository.findById(televisionId);
+//        Optional<WallBracket> optionalWallBracket = wallBracketRepository.findById(wallBracketId);
+//        if (optionalTelevision.isEmpty() && optionalWallBracket.isEmpty()) {
+//            throw new RecordNotFoundException("No Television/WallBracket combination found");
+//        } else {
+//            Television television = optionalTelevision.get();
+//            WallBracket wallBracket = optionalWallBracket.get();
+//            television.setWallBrackets((Set<WallBracket>) wallBracket);
+//            televisionRepository.save(television);
+//        }
+//    }
 
     public List<TelevisionDto> getAllTelevisions() {
         List<Television> allTelevisions = televisionRepository.findAll();
@@ -177,6 +196,7 @@ public class TelevisionService {
         dto.setSold(television.getSold());
         if(television.getRemoteControl() != null) {dto.setRemoteControlDto(transferToRemoteControlDto(television.getRemoteControl()));}
         if(television.getCiModule() != null) {dto.setCiModuleDto(transferToCiModuleDto(television.getCiModule()));}
+//        if(television.getWallBrackets() != null) {dto.setWallBracketDto(transferToWallBracketDto((WallBracket) television.getWallBrackets()));}
         return dto;
     }
 

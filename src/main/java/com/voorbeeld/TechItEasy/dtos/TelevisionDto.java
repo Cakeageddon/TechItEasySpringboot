@@ -26,6 +26,8 @@ public class TelevisionDto {
 
     private CiModuleDto ciModuleDto;
 
+    private WallBracketDto wallBracketDto;
+
     public String getType() {
         return type;
     }
@@ -177,4 +179,12 @@ public class TelevisionDto {
     public void setCiModuleDto(CiModuleDto ciModuleDto) {
         this.ciModuleDto = ciModuleDto;
     }
+
+//    public WallBracketDto getWallBracketDto() {
+//        return wallBracketDto;
+//    }
+//
+//    public void setWallBracketDto(WallBracketDto wallBracketDto) {
+//        this.wallBracketDto = wallBracketDto;
+//    }
 }
