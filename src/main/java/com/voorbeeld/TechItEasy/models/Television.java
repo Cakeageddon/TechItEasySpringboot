@@ -1,18 +1,16 @@
 package com.voorbeeld.TechItEasy.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "televisions")
+@Table(name = "television")
 public class Television {
 
     @Id
     @GeneratedValue
+    @Column(name = "id")
     private Long id;
     private String type;
     private String brand;
@@ -31,9 +29,21 @@ public class Television {
     private Integer originalStock;
     private Integer sold;
 
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "remotecontrol_id", referencedColumnName = "id")
+    private RemoteControl remoteControl;
+
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ciModule_id")
+    private CiModule ciModule;
+
+    @ManyToMany
+    @JoinTable(joinColumns =
+    @JoinColumn(name = "television_id"), inverseJoinColumns = @JoinColumn(name = "wall_bracket_id"), name = "television_wall_bracket")
+    private Set<WallBracket> wallBrackets = new HashSet<>();
 
     public Television() {
-
     }
 
     public Television(Long id, String type, String brand, String name, Double price, Double availableSize,
@@ -193,5 +203,29 @@ public class Television {
 
     public void setSold(Integer sold) {
         this.sold = sold;
+    }
+
+    public RemoteControl getRemoteControl() {
+        return remoteControl;
+    }
+
+    public void setRemoteControl(RemoteControl remoteControl) {
+        this.remoteControl = remoteControl;
+    }
+
+    public Set<WallBracket> getWallBrackets() {
+        return wallBrackets;
+    }
+
+    public void setWallBrackets(Set<WallBracket> wallBrackets) {
+        this.wallBrackets = wallBrackets;
+    }
+
+    public CiModule getCiModule() {
+        return ciModule;
+    }
+
+    public void setCiModule(CiModule ciModule) {
+        this.ciModule = ciModule;
     }
 }

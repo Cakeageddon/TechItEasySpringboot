@@ -31,6 +31,18 @@ public class TelevisionController {
         return ResponseEntity.ok(televisionDto);
     }
 
+    @PutMapping("/televisions/{televisionId}/remotecontrol/{remoteControlId}")
+    public ResponseEntity<Object> assignRemoteControlToTelevision(@PathVariable Long televisionId, @PathVariable Long remoteControlId) {
+        televisionService.assignRemoteControllerToTelevision(televisionId, remoteControlId);
+        return ResponseEntity.ok().body("Afstandbediening verwerkt!");
+    }
+
+    @PutMapping("/televisions/{televisionId}/cimodule/{ciModuleId}")
+    public ResponseEntity<Object> assignCiModuleToTelevision(@PathVariable Long televisionId, @PathVariable Long ciModuleId) {
+        televisionService.assignCiModuleToTelevision(televisionId, ciModuleId);
+        return ResponseEntity.ok().body("Ci module verwerkt!");
+    }
+
     @PostMapping("/televisions")
     public ResponseEntity<Object> createTelevision(@RequestBody TelevisionInputDto television) {
         TelevisionDto televisionSavedLocal = televisionService.createTelevision(television);
@@ -50,4 +62,6 @@ public class TelevisionController {
         televisionService.deleteTelevision(id);
         return ResponseEntity.ok("Object with id: " + id + " is deleted");
     }
+
+
 }

@@ -1,6 +1,9 @@
 package com.voorbeeld.TechItEasy.dtos;
 
+import com.voorbeeld.TechItEasy.models.RemoteControl;
+
 public class TelevisionDto {
+
     private Long id;
     private String type;
     private String brand;
@@ -18,6 +21,10 @@ public class TelevisionDto {
     private Boolean ambiLight;
     private Integer originalStock;
     private Integer sold;
+
+    private RemoteControlDto remoteControlDto;
+
+    private CiModuleDto ciModuleDto;
 
     public String getType() {
         return type;
@@ -153,5 +160,21 @@ public class TelevisionDto {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public RemoteControlDto getRemoteControlDto() {
+        return remoteControlDto;
+    }
+
+    public void setRemoteControlDto(RemoteControlDto remoteControlDto) {
+        this.remoteControlDto = remoteControlDto;
+    }
+
+    public CiModuleDto getCiModuleDto() {
+        return ciModuleDto;
+    }
+
+    public void setCiModuleDto(CiModuleDto ciModuleDto) {
+        this.ciModuleDto = ciModuleDto;
     }
 }
