@@ -2,7 +2,7 @@ package com.voorbeeld.TechItEasy.models;
 
 import com.voorbeeld.TechItEasy.service.TelevisionService;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.Set;
 
 @Entity

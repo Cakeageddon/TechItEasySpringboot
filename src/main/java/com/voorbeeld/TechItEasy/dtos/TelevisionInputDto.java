@@ -1,7 +1,7 @@
 package com.voorbeeld.TechItEasy.dtos;
 
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
 public class TelevisionInputDto {
     private Long id;

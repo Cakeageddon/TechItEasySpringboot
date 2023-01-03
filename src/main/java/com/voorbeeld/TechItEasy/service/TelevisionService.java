@@ -14,6 +14,7 @@ import com.voorbeeld.TechItEasy.repositories.TelevisionRepository;
 import com.voorbeeld.TechItEasy.repositories.WallBracketRepository;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -55,7 +56,7 @@ public class TelevisionService {
     public void assignCiModuleToTelevision(Long televisionId, Long ciModuleId) {
         Optional<Television> optionalTelevision = televisionRepository.findById(televisionId);
         Optional<CiModule> optionalCiModule = ciModuleRepository.findById(ciModuleId);
-        if (optionalTelevision.isEmpty() && optionalCiModule.isEmpty()) {
+        if (optionalTelevision.isEmpty() || optionalCiModule.isEmpty()) {
             throw new RecordNotFoundException("No television/ci module combination found");
         } else {
             Television television = optionalTelevision.get();
@@ -65,18 +66,27 @@ public class TelevisionService {
         }
     }
 
-//    public void assignWallBracketToTelevision(Long televisionId, Long wallBracketId) {
-//        Optional<Television> optionalTelevision = televisionRepository.findById(televisionId);
-//        Optional<WallBracket> optionalWallBracket = wallBracketRepository.findById(wallBracketId);
-//        if (optionalTelevision.isEmpty() && optionalWallBracket.isEmpty()) {
-//            throw new RecordNotFoundException("No Television/WallBracket combination found");
-//        } else {
-//            Television television = optionalTelevision.get();
-//            WallBracket wallBracket = optionalWallBracket.get();
-//            television.setWallBrackets((Set<WallBracket>) wallBracket);
-//            televisionRepository.save(television);
-//        }
-//    }
+    @Transactional
+    public void assignWallBracketToTelevision(Long televisionId, Long wallBracketId) {
+        Optional<Television> optionalTelevision = televisionRepository.findById(televisionId);
+        Optional<WallBracket> optionalWallBracket = wallBracketRepository.findById(wallBracketId);
+        if (optionalTelevision.isEmpty() && optionalWallBracket.isEmpty()) {
+            throw new RecordNotFoundException("No Television/WallBracket combination found");
+        } else {
+            Television television = optionalTelevision.get();
+            WallBracket wallBracket = optionalWallBracket.get();
+
+            Set<WallBracket> wallBrackets = television.getWallBrackets();
+            wallBrackets.add(wallBracket);
+            television.setWallBrackets(wallBrackets);
+            televisionRepository.save(television);
+
+            Set<Television> televisions = wallBracket.getTelevisions();
+            televisions.add(television);
+            wallBracket.setTelevisions(televisions);
+            wallBracketRepository.save(wallBracket);
+        }
+    }
 
     public List<TelevisionDto> getAllTelevisions() {
         List<Television> allTelevisions = televisionRepository.findAll();
@@ -196,7 +206,7 @@ public class TelevisionService {
         dto.setSold(television.getSold());
         if(television.getRemoteControl() != null) {dto.setRemoteControlDto(transferToRemoteControlDto(television.getRemoteControl()));}
         if(television.getCiModule() != null) {dto.setCiModuleDto(transferToCiModuleDto(television.getCiModule()));}
-//        if(television.getWallBrackets() != null) {dto.setWallBracketDto(transferToWallBracketDto((WallBracket) television.getWallBrackets()));}
+//        if(television.getWallBrackets() != null) {dto.setWallBracketDto(transferToWallBracketDto(television.getWallBrackets()));}
         return dto;
     }
 

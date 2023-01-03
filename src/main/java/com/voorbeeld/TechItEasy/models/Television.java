@@ -1,6 +1,6 @@
 package com.voorbeeld.TechItEasy.models;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 

@@ -43,11 +43,11 @@ public class TelevisionController {
         return ResponseEntity.ok().body("Ci module verwerkt!");
     }
 
-//    @PutMapping("/televisions/{televisionId}/wallbracket/{wallBracketId}")
-//    public ResponseEntity<Object> assignWallBracketToTelevision(@PathVariable Long televisionId, @PathVariable Long wallBracketId) {
-//        televisionService.assignWallBracketToTelevision(televisionId, wallBracketId);
-//        return ResponseEntity.ok().body("Wall Bracket verwerkt!");
-//    }
+    @PutMapping("/televisions/{televisionId}/wallbracket/{wallBracketId}")
+    public ResponseEntity<Object> assignWallBracketToTelevision(@PathVariable Long televisionId, @PathVariable Long wallBracketId) {
+        televisionService.assignWallBracketToTelevision(televisionId, wallBracketId);
+        return ResponseEntity.ok().body("Wall Bracket verwerkt!");
+    }
 
     @PostMapping("/televisions")
     public ResponseEntity<Object> createTelevision(@RequestBody TelevisionInputDto television) {

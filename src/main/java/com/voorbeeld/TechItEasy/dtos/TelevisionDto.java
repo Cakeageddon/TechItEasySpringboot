@@ -180,11 +180,11 @@ public class TelevisionDto {
         this.ciModuleDto = ciModuleDto;
     }
 
-//    public WallBracketDto getWallBracketDto() {
-//        return wallBracketDto;
-//    }
-//
-//    public void setWallBracketDto(WallBracketDto wallBracketDto) {
-//        this.wallBracketDto = wallBracketDto;
-//    }
+    public WallBracketDto getWallBracketDto() {
+        return wallBracketDto;
+    }
+
+    public void setWallBracketDto(WallBracketDto wallBracketDto) {
+        this.wallBracketDto = wallBracketDto;
+    }
 }

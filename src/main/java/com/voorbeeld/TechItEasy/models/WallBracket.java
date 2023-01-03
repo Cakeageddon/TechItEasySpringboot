@@ -1,6 +1,6 @@
 package com.voorbeeld.TechItEasy.models;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -67,5 +67,13 @@ public class WallBracket {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public Set<Television> getTelevisions() {
+        return televisions;
+    }
+
+    public void setTelevisions(Set<Television> televisions) {
+        this.televisions = televisions;
     }
 }
