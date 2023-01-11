@@ -14,7 +14,7 @@ import com.voorbeeld.TechItEasy.repositories.TelevisionRepository;
 import com.voorbeeld.TechItEasy.repositories.WallBracketRepository;
 import org.springframework.stereotype.Service;
 
-import jakarta.transaction.Transactional;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -210,7 +210,7 @@ public class TelevisionService {
         return dto;
     }
 
-    public Television transferToTelevision(TelevisionInputDto dto) {
+    private Television transferToTelevision(TelevisionInputDto dto) {
         Television tv = new Television();
         tv.setType(dto.getType());
         tv.setBrand(dto.getBrand());

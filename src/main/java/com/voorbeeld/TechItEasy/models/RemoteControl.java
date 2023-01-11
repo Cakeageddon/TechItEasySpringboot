@@ -1,6 +1,6 @@
 package com.voorbeeld.TechItEasy.models;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "remoteControl")
